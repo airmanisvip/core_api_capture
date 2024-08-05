@@ -13,6 +13,12 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
+    <Filter Include="源文件\dshow">
+      <UniqueIdentifier>{ce6b671e-02ce-4083-ab29-4f1434c0c274}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="源文件\encoder">
+      <UniqueIdentifier>{a7a9a1f2-599b-49bc-a102-f7976e8dfd9f}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="core_api_capture.cpp">
@@ -38,6 +44,27 @@
     </ClCompile>
     <ClCompile Include="encoder_aac.cpp">
       <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="dshow\dshow_helps.cpp">
+      <Filter>源文件\dshow</Filter>
+    </ClCompile>
+    <ClCompile Include="dshow\video_capture_dshow.cpp">
+      <Filter>源文件\dshow</Filter>
+    </ClCompile>
+    <ClCompile Include="dshow\sink_filter_ds.cc">
+      <Filter>源文件\dshow</Filter>
+    </ClCompile>
+    <ClCompile Include="dshow\device_info_impl.cpp">
+      <Filter>源文件\dshow</Filter>
+    </ClCompile>
+    <ClCompile Include="dshow\rw_lock.cc">
+      <Filter>源文件\dshow</Filter>
+    </ClCompile>
+    <ClCompile Include="encoder\encoder_h264.cpp">
+      <Filter>源文件\encoder</Filter>
+    </ClCompile>
+    <ClCompile Include="encoder\video_encoder.cpp">
+      <Filter>源文件\encoder</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -67,6 +94,30 @@
     </ClInclude>
     <ClInclude Include="encoder_aac.h">
       <Filter>源文件</Filter>
+    </ClInclude>
+    <ClInclude Include="dshow\dshow_helps.h">
+      <Filter>源文件\dshow</Filter>
+    </ClInclude>
+    <ClInclude Include="dshow\video_capture_dshow.h">
+      <Filter>源文件\dshow</Filter>
+    </ClInclude>
+    <ClInclude Include="dshow\video_capture_defines.h">
+      <Filter>源文件\dshow</Filter>
+    </ClInclude>
+    <ClInclude Include="dshow\sink_filter_ds.h">
+      <Filter>源文件\dshow</Filter>
+    </ClInclude>
+    <ClInclude Include="dshow\device_info_impl.h">
+      <Filter>源文件\dshow</Filter>
+    </ClInclude>
+    <ClInclude Include="dshow\rw_lock.h">
+      <Filter>源文件\dshow</Filter>
+    </ClInclude>
+    <ClInclude Include="encoder\encoder_h264.h">
+      <Filter>源文件\encoder</Filter>
+    </ClInclude>
+    <ClInclude Include="encoder\video_encoder.h">
+      <Filter>源文件\encoder</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

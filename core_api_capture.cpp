@@ -6,48 +6,41 @@
 #include "ring_buffer.h"
 #include "audio_encode.h"
 #include "audio_buffer_mgr.h"
+#include "dshow/video_capture_dshow.h"
 
-
-class PcmObserver : public AudioCaptureObserver
-{
-public:
-
-
-public:
-	virtual void OnAudioCaptureRecordData(void *data, int sampleRate, int channels, int bitsPerSample, int samplecnt)
-	{
-		//printf("----samplecnt = %d, %lu\n", samplecnt, GetTickCount());
-
-		/*memcpy(buffer + dataSize, data, 2 * samplecnt * channels);
-		dataSize = dataSize + 2 * samplecnt * channels;
-
-		if ((dataSize >= kSize) && file_)
-		{
-			fwrite(buffer, 1, dataSize, file_);
-
-			fclose(file_);
-			file_ = NULL;
-		}*/
-	}
-
-};
+const char *cameraId = "\\\\?\\usb#vid_046d&pid_0825&mi_00#6&4ef629b&1&0000#{65e8773d-8f56-11d0-a3b9-00a0c9223196}\\global";
 
 int main()
 {
-	AudioBufferMgr *mgr = new AudioBufferMgr();
-	AudioEncode *observer = new AudioEncode(mgr);
-	CWasApiCapture *recorder = new CWasApiCapture(mgr);
+	//VideoCapture::EnumAllDevices();
 
-	recorder->Initialize(false);
-	recorder->StartCapture();
+	VideoCapture *videoCapture = new VideoCapture();
+
+	int len = strlen(cameraId);
+
+	videoCapture->Init(cameraId);
+
+	VideoCaptureCapability cap;
+	cap.width = 1280;
+	cap.height = 720;
+	cap.maxFPS = 15;
+
+	videoCapture->StartCapture(cap);
+
+	//AudioBufferMgr *mgr = new AudioBufferMgr();
+	//AudioEncode *observer = new AudioEncode(mgr);
+	//CWasApiCapture *recorder = new CWasApiCapture(mgr);
+
+	//recorder->Initialize(false);
+	//recorder->StartCapture();
 
 	getchar();
 
-	recorder->StopCapture();
-	recorder->UnInitialize();
+	//recorder->StopCapture();
+	//recorder->UnInitialize();
 
-	delete recorder;
-	recorder = NULL;
+	//delete recorder;
+	//recorder = NULL;
 }
 
 // 运行程序: Ctrl + F5 或调试 >“开始执行(不调试)”菜单

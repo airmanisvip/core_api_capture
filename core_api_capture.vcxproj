@@ -88,15 +88,16 @@
       </PrecompiledHeader>
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
-      <SDLCheck>true</SDLCheck>
+      <SDLCheck>false</SDLCheck>
       <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;_CRT_SECURE_NO_WARNINGS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>thirdparty/ffmpeg_sdk/include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <ConformanceMode>false</ConformanceMode>
+      <AdditionalIncludeDirectories>thirdparty/ffmpeg_sdk/include;thirdparty/directshow/baseclasses;thirdparty/libyuv/include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalLibraryDirectories>thirdparty/ffmpeg_sdk/lib/win;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>thirdparty/ffmpeg_sdk/lib/win;thirdparty/directshow/baseclasses/Debug;thirdparty/libyuv/lib/win/debug;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>Winmm.lib;BaseClasses.lib;yuv.lib;avcodec.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
@@ -158,6 +159,13 @@
     <ClCompile Include="audio_resampler.cpp" />
     <ClCompile Include="audio_util.cpp" />
     <ClCompile Include="core_api_capture.cpp" />
+    <ClCompile Include="dshow\device_info_impl.cpp" />
+    <ClCompile Include="dshow\dshow_helps.cpp" />
+    <ClCompile Include="dshow\rw_lock.cc" />
+    <ClCompile Include="dshow\sink_filter_ds.cc" />
+    <ClCompile Include="dshow\video_capture_dshow.cpp" />
+    <ClCompile Include="encoder\encoder_h264.cpp" />
+    <ClCompile Include="encoder\video_encoder.cpp" />
     <ClCompile Include="encoder_aac.cpp" />
     <ClCompile Include="platform-windows.c" />
     <ClCompile Include="was_api_capture.cpp" />
@@ -168,6 +176,14 @@
     <ClInclude Include="audio_fmt.h" />
     <ClInclude Include="audio_resampler.h" />
     <ClInclude Include="audio_util.h" />
+    <ClInclude Include="dshow\device_info_impl.h" />
+    <ClInclude Include="dshow\dshow_helps.h" />
+    <ClInclude Include="dshow\rw_lock.h" />
+    <ClInclude Include="dshow\sink_filter_ds.h" />
+    <ClInclude Include="dshow\video_capture_defines.h" />
+    <ClInclude Include="dshow\video_capture_dshow.h" />
+    <ClInclude Include="encoder\encoder_h264.h" />
+    <ClInclude Include="encoder\video_encoder.h" />
     <ClInclude Include="encoder_aac.h" />
     <ClInclude Include="platform.h" />
     <ClInclude Include="util_uint64.h" />

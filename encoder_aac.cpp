@@ -200,6 +200,7 @@ bool AACEncoder::Encode(short *input, unsigned int numInputFrames, AVPacket &pkt
 			pkt.pts = *m_curEncodeTSList.begin();
 			m_curEncodeTSList.pop_front();
 
+			pkt.stream_index = 0;
 			pkt.dts = pkt.pts;
 
 			/*char adts_header_buf[7] = { 0 };
@@ -232,7 +233,10 @@ bool AACEncoder::encode(AVFrame *inputFrame, AVPacket &pkt)
 	if (nRet == 0)
 	{
 		nRet = avcodec_receive_packet(m_pCodecCtx, &pkt);
+	}
 
+	if (nRet == 0)
+	{
 		got_packet = true;
 	}
 

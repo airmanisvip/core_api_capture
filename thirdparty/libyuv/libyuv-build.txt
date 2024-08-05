@@ -1,0 +1,7 @@
+1 安装cmake
+2 cmake中选择源码路径和将要生成的工程文件存放目录
+3 根据提示选择安装的vs版本
+4 点configure,generate
+5 打开cmake生成的工程文件
+6 设置工程属性 Debug为MTd, Relase为MT
+7 编译

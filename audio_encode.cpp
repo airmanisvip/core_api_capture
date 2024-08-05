@@ -7,8 +7,6 @@
 
 #include <iostream>
 
-#pragma comment(lib, "avcodec.lib")
-
 AudioEncode::AudioEncode(AudioBufferMgr *mgr)
 	:m_hEncodeThread(NULL),
 	m_isRunning(true),
@@ -22,6 +20,8 @@ AudioEncode::AudioEncode(AudioBufferMgr *mgr)
 }
 AudioEncode::~AudioEncode()
 {
+	m_isRunning = false;
+
 	WaitForSingleObject(m_hEncodeThread, INFINITE);
 
 	m_hEncodeThread = NULL;
