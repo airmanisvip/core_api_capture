@@ -7,16 +7,19 @@
 #include "audio_encode.h"
 #include "audio_buffer_mgr.h"
 #include "dshow/video_capture_dshow.h"
+#include "encoder/video_encoder.h"
+#include "output/output_mgr.h"
 
 const char *cameraId = "\\\\?\\usb#vid_046d&pid_0825&mi_00#6&4ef629b&1&0000#{65e8773d-8f56-11d0-a3b9-00a0c9223196}\\global";
 
 int main()
 {
-	//VideoCapture::EnumAllDevices();
+	
+	VideoEncode *videoEncoder = new VideoEncode();
+
+	videoEncoder->Init(1280, 720, 15, 900 * 1000);
 
 	VideoCapture *videoCapture = new VideoCapture();
-
-	int len = strlen(cameraId);
 
 	videoCapture->Init(cameraId);
 
@@ -25,22 +28,29 @@ int main()
 	cap.height = 720;
 	cap.maxFPS = 15;
 
+	videoCapture->RegisterCaptureObserver(videoEncoder);
+
+	AudioBufferMgr *mgr = new AudioBufferMgr();
+	AudioEncode *observer = new AudioEncode(mgr);
+	CWasApiCapture *recorder = new CWasApiCapture(mgr);
+
+	recorder->Initialize(false);
+
+	COutPutMgr::Instance()->OpenFile(true, true, videoEncoder->GetCodecCtx(), observer->GetCodecCtx(), 15, "d:\\123.flv");
+
+
 	videoCapture->StartCapture(cap);
-
-	//AudioBufferMgr *mgr = new AudioBufferMgr();
-	//AudioEncode *observer = new AudioEncode(mgr);
-	//CWasApiCapture *recorder = new CWasApiCapture(mgr);
-
-	//recorder->Initialize(false);
-	//recorder->StartCapture();
+	recorder->StartCapture();
 
 	getchar();
 
-	//recorder->StopCapture();
-	//recorder->UnInitialize();
+	recorder->StopCapture();
+	recorder->UnInitialize();
+	videoCapture->StopCapture();
+	COutPutMgr::Instance()->CloseFile();
 
-	//delete recorder;
-	//recorder = NULL;
+	delete recorder;
+	recorder = NULL;
 }
 
 // 运行程序: Ctrl + F5 或调试 >“开始执行(不调试)”菜单

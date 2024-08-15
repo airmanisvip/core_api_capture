@@ -26,6 +26,11 @@ public:
 
 	virtual bool Encode(short *input, unsigned int numInputFrames, AVPacket &pkt, unsigned long long timestamp);
 
+	AVCodecContext *GetCodecCtx()
+	{
+		return m_pCodecCtx;
+	}
+
 public:
 	static int adts_header(char *p_adts_header, const int data_length, const int profile, const int samplerate, int channels);
 	static void write_adts_frame(char *data, unsigned int size, FILE *file);

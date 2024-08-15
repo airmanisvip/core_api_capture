@@ -14,6 +14,10 @@ public:
 	AudioEncode(AudioBufferMgr *mgr);
 	~AudioEncode();
 
+	AVCodecContext *GetCodecCtx()
+	{
+		return m_aacEncoder.GetCodecCtx();
+	}
 private:
 	static DWORD WINAPI AudioEncodeThread(LPVOID context);
 	DWORD DoEncodeThread();

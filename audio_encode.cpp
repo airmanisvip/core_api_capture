@@ -5,6 +5,8 @@
 
 #include "audio_buffer_mgr.h"
 
+#include "output/output_mgr.h"
+
 #include <iostream>
 
 AudioEncode::AudioEncode(AudioBufferMgr *mgr)
@@ -17,6 +19,7 @@ AudioEncode::AudioEncode(AudioBufferMgr *mgr)
 	{
 		return;
 	}
+	SetThreadPriority(m_hEncodeThread, THREAD_PRIORITY_TIME_CRITICAL);
 }
 AudioEncode::~AudioEncode()
 {
@@ -72,6 +75,9 @@ DWORD AudioEncode::DoEncodeThread()
 				/*static unsigned long long last = 0;
 				std::cout << "timestamp = " << pkt->pts / 1000 << std::endl;
 				last = pkt->pts;*/
+				//printf("---------------audio--------------%llu\n", pkt->pts / 1000000);
+
+				COutPutMgr::Instance()->WritePacket(pkt);
 			}
 
 			av_packet_unref(pkt);

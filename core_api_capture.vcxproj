@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <Project DefaultTargets="Build" ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup Label="ProjectConfigurations">
     <ProjectConfiguration Include="Debug|Win32">
@@ -97,7 +97,7 @@
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <AdditionalLibraryDirectories>thirdparty/ffmpeg_sdk/lib/win;thirdparty/directshow/baseclasses/Debug;thirdparty/libyuv/lib/win/debug;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>Winmm.lib;BaseClasses.lib;yuv.lib;avcodec.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>Winmm.lib;BaseClasses.lib;yuv.lib;avcodec.lib;avformat.lib;jpeg.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
@@ -167,6 +167,8 @@
     <ClCompile Include="encoder\encoder_h264.cpp" />
     <ClCompile Include="encoder\video_encoder.cpp" />
     <ClCompile Include="encoder_aac.cpp" />
+    <ClCompile Include="output\flv_file_writer.cpp" />
+    <ClCompile Include="output\output_mgr.cpp" />
     <ClCompile Include="platform-windows.c" />
     <ClCompile Include="was_api_capture.cpp" />
   </ItemGroup>
@@ -185,6 +187,8 @@
     <ClInclude Include="encoder\encoder_h264.h" />
     <ClInclude Include="encoder\video_encoder.h" />
     <ClInclude Include="encoder_aac.h" />
+    <ClInclude Include="output\flv_file_writer.h" />
+    <ClInclude Include="output\output_mgr.h" />
     <ClInclude Include="platform.h" />
     <ClInclude Include="util_uint64.h" />
     <ClInclude Include="was_api_capture.h" />

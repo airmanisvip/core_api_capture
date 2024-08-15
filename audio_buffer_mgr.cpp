@@ -73,6 +73,7 @@ void AudioBufferMgr::OnAudioCaptureRecordData(
 	int sampleRate, int channels, int bitsPerSample,
 	int sampleCnt, unsigned long long timestampNS)
 {
+	//printf("------------audio-----------------%llu\n", (os_gettime_ns() - timestampNS) / 1000000);
 
 #if 0
 	FILE *file = fopen("f:\\1.pcm", "ab+");

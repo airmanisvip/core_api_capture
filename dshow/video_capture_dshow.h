@@ -82,4 +82,6 @@ private:
 
 private:
 	VideoCaptureObserver	*m_observer;
+
+	unsigned char *m_tmpYuv;
 };

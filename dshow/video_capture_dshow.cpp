@@ -22,7 +22,8 @@ VideoCapture::VideoCapture()
 	m_pDvFilter(NULL),
 	m_pInputDvPin(NULL),
 	m_pOutputDvPin(NULL),
-	m_observer(NULL)
+	m_observer(NULL),
+	m_tmpYuv(NULL)
 {
 	m_requestedCapability.width = 1280;
 	m_requestedCapability.height = 720;
@@ -233,6 +234,12 @@ int ConvertVideoType(VideoType video_type) {
 
 int VideoCapture::IncomingFrame(unsigned char *videoFrame, size_t videoFrameLength, const VideoCaptureCapability& frameInfo, long long captureTime/* = 0*/)
 {
+	//static unsigned long long last = 0;
+	//unsigned long long current = os_gettime_ns();
+
+	//printf("-----------------------------%llu\n", (current - last) / 1000000);
+	//last = current;
+
 	//原始数据位MJPEG格式
 	std::lock_guard<std::mutex> lock(m_mutex);
 
@@ -249,23 +256,32 @@ int VideoCapture::IncomingFrame(unsigned char *videoFrame, size_t videoFrameLeng
 		return -1;
 	}
 
-	unsigned char *yuvBuffer = new unsigned char[stride_y * height + (stride_uv + stride_uv) * ((height + 1) / 2)];
-	unsigned char *uBuffer = yuvBuffer + stride_y * height;
+	//注意 libyuv库的编译要支持jpeg才行 https://blog.csdn.net/yp18792574062/article/details/113103191
+	if (!m_tmpYuv)
+	{
+		m_tmpYuv = new unsigned char[width * height * 3 / 2];
+	}
+	unsigned char *uBuffer = m_tmpYuv + stride_y * height;
 	unsigned char *vBuffer = uBuffer + stride_uv * (height + 1) / 2;
 
-	const int nRet = libyuv::ConvertToI420(videoFrame, videoFrameLength, yuvBuffer, stride_y, 
+	const int nRet = libyuv::ConvertToI420(videoFrame, videoFrameLength, 
+		m_tmpYuv, stride_y,
 		uBuffer, stride_uv, 
 		vBuffer, stride_uv, 
 		0, 0, width, height, 
 		target_width, target_height, 
 		libyuv::kRotate0, ConvertVideoType(frameInfo.videoType));
 
-	if (m_observer)
-	{
-		m_observer->OnVideoFrame420(yuvBuffer, stride_y, stride_uv, stride_uv, width, height, os_gettime_ns());
-	}
+	//FILE *file = fopen("d:\\11.yuv", "ab+");
+	//fwrite(yuvBuffer, 1, width * height * 3 / 2, file);
+	///*fwrite(uBuffer, 1, width * height * 3 / 2, file);
+	//fwrite(vBuffer, 1, width * height * 3 / 2, file);*/
+	//fclose(file);
 
-	delete[] yuvBuffer;
+	if (!nRet && m_observer)
+	{
+		m_observer->OnVideoFrame420(m_tmpYuv, stride_y, stride_uv, stride_uv, width, height, os_gettime_ns());
+	}
 
 
 	return 0;

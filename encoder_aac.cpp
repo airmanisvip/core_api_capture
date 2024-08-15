@@ -200,7 +200,7 @@ bool AACEncoder::Encode(short *input, unsigned int numInputFrames, AVPacket &pkt
 			pkt.pts = *m_curEncodeTSList.begin();
 			m_curEncodeTSList.pop_front();
 
-			pkt.stream_index = 0;
+			pkt.stream_index = 1;
 			pkt.dts = pkt.pts;
 
 			/*char adts_header_buf[7] = { 0 };

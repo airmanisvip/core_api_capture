@@ -1,5 +1,7 @@
 #pragma once
 
+#include <string.h>
+
 enum
 {
 	kMaxVideoDeviceUniqueNameLength = 1024
@@ -100,4 +102,48 @@ public:
 
 protected:
 	~VideoCaptureExternal() {}
+};
+
+struct VideoFrame
+{
+	const unsigned char *data;
+	unsigned int lineSizeY;
+	unsigned int lineSizeU;
+	unsigned int lineSizeV;
+	unsigned int width;
+	unsigned int height;
+	unsigned long long timeStamp;
+
+	VideoFrame()
+	{
+		data = NULL;
+		lineSizeY = 0;
+		lineSizeU = 0;
+		lineSizeV = 0;
+		timeStamp = 0;
+
+		count = 0;
+		skipped = 0;
+	}
+
+	int skipped;
+	int count;
+};
+struct VideoFrameCache
+{
+	VideoFrameCache()
+	{
+		emptyFrames = kVideoCacheFrameCount;
+		readIndex = 0;
+		writeIndex = 0;
+	}
+	unsigned int emptyFrames;
+	unsigned int readIndex;
+	unsigned int writeIndex;
+
+	enum
+	{
+		kVideoCacheFrameCount = 6
+	};
+	struct VideoFrame cache[kVideoCacheFrameCount];
 };

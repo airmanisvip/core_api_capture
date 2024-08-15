@@ -19,6 +19,9 @@
     <Filter Include="源文件\encoder">
       <UniqueIdentifier>{a7a9a1f2-599b-49bc-a102-f7976e8dfd9f}</UniqueIdentifier>
     </Filter>
+    <Filter Include="源文件\output">
+      <UniqueIdentifier>{f5d45326-c4c8-4716-8d86-f33285563752}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="core_api_capture.cpp">
@@ -65,6 +68,12 @@
     </ClCompile>
     <ClCompile Include="encoder\video_encoder.cpp">
       <Filter>源文件\encoder</Filter>
+    </ClCompile>
+    <ClCompile Include="output\flv_file_writer.cpp">
+      <Filter>源文件\output</Filter>
+    </ClCompile>
+    <ClCompile Include="output\output_mgr.cpp">
+      <Filter>源文件\output</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -118,6 +127,12 @@
     </ClInclude>
     <ClInclude Include="encoder\video_encoder.h">
       <Filter>源文件\encoder</Filter>
+    </ClInclude>
+    <ClInclude Include="output\flv_file_writer.h">
+      <Filter>源文件\output</Filter>
+    </ClInclude>
+    <ClInclude Include="output\output_mgr.h">
+      <Filter>源文件\output</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

@@ -3,7 +3,10 @@
 H264Encoder::H264Encoder()
 	:m_pCodec(NULL),
 	m_pCodecCtx(NULL),
-	m_pInputFrame(NULL)
+	m_pInputFrame(NULL),
+	m_nWidth(0),
+	m_nHeight(0),
+	m_isInit(false)
 {
 	m_pInputFrame = av_frame_alloc();
 }
@@ -71,6 +74,10 @@ bool H264Encoder::Init(int width, int height, int fps, int bitRate)
 		return false;
 	}
 
+	m_nWidth = width;
+	m_nHeight = height;
+	m_isInit = true;
+
 	return true;
 }
 void H264Encoder::UnInit()
@@ -82,7 +89,7 @@ void H264Encoder::UnInit()
 		m_pCodecCtx = NULL;
 	}
 }
-bool H264Encoder::Encode(unsigned char *data, int width, int height, AVPacket &pkt, unsigned long long timestampNS, bool *receivePkt)
+bool H264Encoder::Encode(const unsigned char *data, int width, int height, AVPacket &pkt, unsigned long long timestampNS, bool *receivePkt)
 {
 	int got_picture = 0;
 
@@ -118,8 +125,11 @@ bool H264Encoder::Encode(unsigned char *data, int width, int height, AVPacket &p
 	{
 		*receivePkt = true;
 
-		pkt.pts = timestampNS;
-		pkt.dts = timestampNS;
+		//编码器里缓冲了很多帧，所以第一个被编码成功的时间戳应该是第一个被送进编码器的帧的时间戳
+		pkt.pts = timestampNS - 1000000000;
+		pkt.dts = timestampNS - 1000000000;
+
+		pkt.stream_index = 0;
 	}
 	else
 	{
@@ -127,4 +137,9 @@ bool H264Encoder::Encode(unsigned char *data, int width, int height, AVPacket &p
 	}
 
 	return true;
+}
+void H264Encoder::GetHeaderData(char *data, int &size)
+{
+	memcpy(data, m_pCodecCtx->extradata, m_pCodecCtx->extradata_size);
+	size = m_pCodecCtx->extradata_size;
 }

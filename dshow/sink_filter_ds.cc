@@ -322,6 +322,13 @@ HRESULT CaptureInputPin::Receive(IN IMediaSample* pIMediaSample)
     }
 
     // NOTE: filter unlocked within Send call
+	long long startTime, stopTime;
+	bool hasTime = SUCCEEDED(pIMediaSample->GetTime(&startTime, &stopTime));
+
+	unsigned long long diff = (stopTime - startTime) * 100;
+
+	DWORD a = GetTickCount();
+
     reinterpret_cast<CaptureSinkFilter*>(m_pFilter)->ProcessCapturedFrame(pBuffer, static_cast<size_t>(length), _resultingCapability);
   }
   else
