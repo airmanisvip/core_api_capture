@@ -6,10 +6,13 @@ extern "C"
 #endif
 
 #include "libavcodec/avcodec.h"
+#include "libavutil/opt.h"
 
 #ifdef __cplusplus
 };
 #endif
+
+#include <list>
 
 class H264Encoder
 {
@@ -37,8 +40,12 @@ private:
 	AVFrame			*m_pInputFrame;
 
 private:
+	std::list<unsigned long long> m_cacheTimestamp;
+
+private:
 	int		m_nWidth;
 	int		m_nHeight;
+	int		m_nFps;
 
 private:
 	bool			m_isInit;

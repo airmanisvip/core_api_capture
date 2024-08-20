@@ -6,7 +6,8 @@ H264Encoder::H264Encoder()
 	m_pInputFrame(NULL),
 	m_nWidth(0),
 	m_nHeight(0),
-	m_isInit(false)
+	m_isInit(false),
+	m_nFps(1)
 {
 	m_pInputFrame = av_frame_alloc();
 }
@@ -22,6 +23,8 @@ bool H264Encoder::Init(int width, int height, int fps, int bitRate)
 {
 	int nRet = 0;
 	AVDictionary *options = NULL;
+
+	m_nFps = fps;
 
 	m_pCodec = avcodec_find_encoder(AV_CODEC_ID_H264);
 	if (!m_pCodec)
@@ -66,9 +69,11 @@ bool H264Encoder::Init(int width, int height, int fps, int bitRate)
 	m_pCodecCtx->me_range = 64;
 	m_pCodecCtx->flags |= AV_CODEC_FLAG_GLOBAL_HEADER;
 
-	av_dict_set(&options, "preset", "superfast", 0);
+	//av_opt_set(m_pCodecCtx->priv_data, "preset", "veryfast", 0);
+	av_opt_set(m_pCodecCtx->priv_data, "preset", "superfast", 0);
+	av_opt_set(m_pCodecCtx->priv_data, "tune", "zerolatency", 0);
 
-	nRet = avcodec_open2(m_pCodecCtx, m_pCodecCtx->codec, &options);
+	nRet = avcodec_open2(m_pCodecCtx, m_pCodecCtx->codec, NULL);
 	if (nRet < 0)
 	{
 		return false;
@@ -92,6 +97,8 @@ void H264Encoder::UnInit()
 bool H264Encoder::Encode(const unsigned char *data, int width, int height, AVPacket &pkt, unsigned long long timestampNS, bool *receivePkt)
 {
 	int got_picture = 0;
+
+	m_cacheTimestamp.push_back(timestampNS);
 
 	avpicture_fill((AVPicture *)m_pInputFrame, data, m_pCodecCtx->pix_fmt, m_pCodecCtx->width, m_pCodecCtx->height);
 
@@ -126,8 +133,11 @@ bool H264Encoder::Encode(const unsigned char *data, int width, int height, AVPac
 		*receivePkt = true;
 
 		//编码器里缓冲了很多帧，所以第一个被编码成功的时间戳应该是第一个被送进编码器的帧的时间戳
-		pkt.pts = timestampNS - 1000000000;
-		pkt.dts = timestampNS - 1000000000;
+		unsigned long long firstTs = *m_cacheTimestamp.begin();
+		m_cacheTimestamp.pop_front();
+
+		pkt.pts = firstTs;
+		pkt.dts = pkt.pts;
 
 		pkt.stream_index = 0;
 	}
