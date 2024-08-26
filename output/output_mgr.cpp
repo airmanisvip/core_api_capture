@@ -83,7 +83,7 @@ DWORD COutPutMgr::DoWriteThread()
 			break;
 		}
 
-		if (m_firstVideoTimestamp > 0 && m_listPkt.size() < 5)
+		if (m_firstVideoTimestamp > 0 && m_listPkt.size() < 7)
 		{
 			Sleep(1);
 			continue;
