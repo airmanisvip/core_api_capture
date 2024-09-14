@@ -92,7 +92,7 @@ void FlvFileWriter::CloseFile()
 }
 int FlvFileWriter::WritePacket(AVPacket *pkt)
 {
-	//ÊäÈëÊ±¼ä´Áµ¥Î»ÊÇms
+	//ï¿½ï¿½ï¿½ï¿½Ê±ï¿½ï¿½ï¿½ï¿½ï¿½Î»ï¿½ï¿½ms
 	AVRational srcTimeBase;
 	srcTimeBase.num = 1;
 	srcTimeBase.den = 1000;

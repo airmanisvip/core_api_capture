@@ -240,7 +240,7 @@ int VideoCapture::IncomingFrame(unsigned char *videoFrame, size_t videoFrameLeng
 	//printf("-----------------------------%llu\n", (current - last) / 1000000);
 	//last = current;
 
-	//原始数据位MJPEG格式
+	//原始锟斤拷锟斤拷位MJPEG锟斤拷式 鍘熷鏁版嵁浣峂JPEG鏍煎紡
 	std::lock_guard<std::mutex> lock(m_mutex);
 
 	int width = frameInfo.width;
@@ -256,7 +256,7 @@ int VideoCapture::IncomingFrame(unsigned char *videoFrame, size_t videoFrameLeng
 		return -1;
 	}
 
-	//注意 libyuv库的编译要支持jpeg才行 https://blog.csdn.net/yp18792574062/article/details/113103191
+	//注锟斤拷 libyuv锟斤拷谋锟斤拷锟揭э拷锟絡peg锟斤拷锟斤拷 娉ㄦ剰 libyuv搴撶殑缂栬瘧瑕佹敮鎸乯peg鎵嶈 https://blog.csdn.net/yp18792574062/article/details/113103191
 	if (!m_tmpYuv)
 	{
 		m_tmpYuv = new unsigned char[width * height * 3 / 2];
